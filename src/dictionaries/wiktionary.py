@@ -33,7 +33,7 @@ def wiktionary2anki(infile, outpath, lang):
     fields = []
 
     for line in infile:
-        term = line.strip().lower().replace(r"\s", "_")
+        term = line.strip().lower().replace(" ", "_")
 
         response = requests.get(f"{API_URL}/{term}")
 

@@ -40,7 +40,7 @@ def wiktionary2anki(infile, outpath, lang):
         if response.status_code == 200:
             data = response.json()
         else:
-            print(f"Error: {term} not found!")
+            print(f'Error: "{term}" not found!')
             continue
 
         if not lang in data:
@@ -52,6 +52,7 @@ def wiktionary2anki(infile, outpath, lang):
         fields.append(
             [
                 f'<div style="text-align: center;">{term} <i>({categories})</i></div>',
+                gen_answer(data[lang]),
             ]
         )
 

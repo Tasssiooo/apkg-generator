@@ -1,4 +1,5 @@
 import argparse
+from wiktionary2anki import wiktionary2anki
 
 
 def main():
@@ -12,12 +13,10 @@ def main():
     )
     args = parser.parse_args()
 
-    out_name = args.input if args.output == "-" else args.output
+    outpath = args.input if args.output == "-" else args.output
 
     with open(args.input) as input:
-        with open(out_name) as output:
-            # todo
-            ...
+        wiktionary2anki(input, outpath)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,7 @@
 import argparse
 
+from dictionaries.wiktionary import wiktionary2anki
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -30,7 +32,8 @@ def main():
     outpath = args.input if args.output == "-" else args.output
 
     with open(args.input) as input:
-        ...
+        if args.source == "wik":
+            wiktionary2anki(input, outpath, args.lang)
 
 
 if __name__ == "__main__":

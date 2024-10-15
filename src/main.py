@@ -1,22 +1,36 @@
 import argparse
-from wiktionary2anki import wiktionary2anki
 
 
 def main():
     parser = argparse.ArgumentParser(
-        prog="Apkg generator",
-        description="It takes a path to a file with terms in it as argument then search for those terms in the Wiktionary database and creates an apkg file with the data.",
+        prog="APKG Generator",
+        description="It takes a path to a file with terms in it as argument then search for those terms in a database like Wiktionary or Cambridge, and creates an APKG file with the data.",
     )
     parser.add_argument("input", help="Ex.: path/to/file_input.txt")
     parser.add_argument(
-        "output", nargs="?", default="-", help="Ex.: path/to/file_output.apkg"
+        "output",
+        nargs="?",
+        default="-",
+        help="Ex.: path/to/file_output.apkg. Defaults to the same path and name as input.",
     )
+    parser.add_argument(
+        "lang",
+        nargs="?",
+        default="en",
+        help="Choose the terms language (en, es, pt, it, de, etc). Defaults to en (English).",
+    )
+    parser.add_argument(
+        "source",
+        choices=["cam", "wik"],
+        help="Choose the source: Cambridge or Wiktionary.",
+    )
+
     args = parser.parse_args()
 
     outpath = args.input if args.output == "-" else args.output
 
     with open(args.input) as input:
-        wiktionary2anki(input, outpath)
+        ...
 
 
 if __name__ == "__main__":

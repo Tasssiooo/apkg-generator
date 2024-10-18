@@ -1,6 +1,6 @@
 import argparse
 
-from dictionaries.wiktionary import wiktionary2anki
+from dictionaries import wiktionary2anki, cambridge2anki
 
 
 def main():
@@ -34,6 +34,8 @@ def main():
     with open(args.input) as input:
         if args.source == "wik":
             wiktionary2anki(input, outpath, args.lang)
+        else:
+            cambridge2anki(input, outpath, args.lang)
 
 
 if __name__ == "__main__":

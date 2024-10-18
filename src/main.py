@@ -7,19 +7,17 @@ def main():
     parser = argparse.ArgumentParser(
         prog="APKG Generator",
         description="It takes a path to a file with terms in it as argument then search for those terms in a database like Wiktionary or Cambridge, and creates an APKG file with the data.",
+        usage="apkg-generator [-h] input [-o output] [lang] {cam, wik}",
     )
     parser.add_argument("input", help="Ex.: path/to/file_input.txt")
     parser.add_argument(
-        "output",
-        nargs="?",
-        default="-",
+        "-o",
+        "--output",
         help="Ex.: path/to/file_output.apkg. Defaults to the same path and name as input.",
     )
     parser.add_argument(
         "lang",
-        nargs="?",
-        default="en",
-        help="Choose the terms language (en, es, pt, it, de, etc). Defaults to en (English).",
+        help="Choose the terms language (en, es, pt, en-pt, en-es, etc).",
     )
     parser.add_argument(
         "source",
@@ -29,7 +27,7 @@ def main():
 
     args = parser.parse_args()
 
-    outpath = args.input if args.output == "-" else args.output
+    outpath = args.input if not args.output else args.output
 
     with open(args.input) as input:
         if args.source == "wik":

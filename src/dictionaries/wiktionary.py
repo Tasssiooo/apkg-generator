@@ -1,6 +1,6 @@
 import requests
 
-from utils.anki import toAnki
+from utils import toAnki
 
 API_URL = "https://en.wiktionary.org/api/rest_v1/page/definition"
 

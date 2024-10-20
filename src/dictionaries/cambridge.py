@@ -37,9 +37,9 @@ def cambridge2anki(infile, outpath, lang):
     fields = []
 
     for line in infile:
-        term = line.strip().lower().replace(" ", "-")
+        term = line.strip().lower()
 
-        response = requests.get(f"{API_URL}/{lang}/{term}")
+        response = requests.get(f"{API_URL}/{lang}/{term.replace(" ", "-")}")
 
         if response.status_code == 200:
             data = response.json()
@@ -48,7 +48,7 @@ def cambridge2anki(infile, outpath, lang):
                 f'Error: "{term}" not found in {lang.upper()}!\nTrying again with EN...'
             )
 
-            response = requests.get(f"{API_URL}/en/{term}")
+            response = requests.get(f"{API_URL}/en/{term.replace(" ", "-")}")
 
             if response.status_code == 200:
                 data = response.json()

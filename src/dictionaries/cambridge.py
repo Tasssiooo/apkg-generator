@@ -17,7 +17,7 @@ def gen_answer(data):
         if "example" in item and len(item["example"]) > 0:
             examples = "".join(
                 [
-                    f'<li><i>"{example["text"].strip()}"</i></li><li>trans: <i>"{example["translation"].strip()}"</i></li>'
+                    f'<li><i>"{example["text"].strip()}:"</i></li><li>trans: <i>"{example["translation"].strip()}"</i></li>'
                     for example in item["example"]
                 ]
             )
@@ -44,8 +44,17 @@ def cambridge2anki(infile, outpath, lang):
         if response.status_code == 200:
             data = response.json()
         else:
-            print(f'Error: "{term}" not found in {lang.upper()}!')
-            continue
+            print(
+                f'Error: "{term}" not found in {lang.upper()}!\nTrying again with EN...'
+            )
+
+            response = requests.get(f"{API_URL}/en/{term}")
+
+            if response.status_code == 200:
+                data = response.json()
+            else:
+                print(f'Error: "{term}" not found in EN')
+                continue
 
         categories = "/".join({pos for pos in data["pos"]})
 

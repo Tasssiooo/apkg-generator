@@ -1,6 +1,6 @@
 import argparse
-
-from dictionaries import wiktionary2anki, cambridge2anki
+from dictionaries.cambridge import cambridge2anki
+from dictionaries.wiktionary import wiktionary2anki
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     parser.add_argument(
         "source",
         choices=["cam", "wik"],
-        help="Choose the source: Cambridge or Wiktionary.",
+        help="Choose the source: Cambridge or Wiktionary",
     )
 
     args = parser.parse_args()
@@ -30,10 +30,13 @@ def main():
     outpath = args.input if not args.output else args.output
 
     with open(args.input) as input:
-        if args.source == "wik":
-            wiktionary2anki(input, outpath, args.lang)
-        else:
-            cambridge2anki(input, outpath, args.lang)
+        match args.source:
+            case "wik":
+                wiktionary2anki(input, outpath, args.lang)
+            case "cam":
+                cambridge2anki(input, outpath, args.lang)
+            case _:
+                print(f'Unknown source: "{args.source}".')
 
 
 if __name__ == "__main__":

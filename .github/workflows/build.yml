@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: dist/apkggen
+          path: dist
 
       - name: Create Release Draft
         id: create_release
@@ -56,6 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/apkggen
+          asset_path: dist
           asset_name: Apkggen
-          assets_content_type: application/zip
+          asset_content_type: application/zip

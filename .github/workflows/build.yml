@@ -30,7 +30,7 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory main.py
+          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory src/main.py
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3

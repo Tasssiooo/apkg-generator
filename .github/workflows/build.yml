@@ -47,5 +47,5 @@ jobs:
           release_name: "Apkggen"
           body: |
             Test.
-          release_draft: true
+          draft: true
           prerelease: false

@@ -1,12 +1,11 @@
 import requests
-
-from utils import toAnki
+import utils.anki
 
 API_URL = "https://en.wiktionary.org/api/rest_v1/page/definition"
 
 
 def gen_answer(data):
-    answer = ""
+    answer = []
 
     for item in data:
         partOfSpeech = item["partOfSpeech"]
@@ -16,16 +15,19 @@ def gen_answer(data):
         if "examples" in item["definitions"][0]:
             examples = "".join(
                 [
-                    f'<li><i>"{example}"</i></li>'
+                    f'<li><i>"{example}";</i></li>'
                     for example in item["definitions"][0]["examples"]
                 ]
             )
 
-        answer += (
-            f"<strong>{partOfSpeech}</strong> - {definition}\n<ul>{examples}</ul>\n\n"
-        )
+        if examples:
+            answer.append(
+                f"<strong>{partOfSpeech}</strong> - {definition}\n<ul>{examples}</ul>\n\n"
+            )
+        else:
+            answer.append(f"<strong>{partOfSpeech}</strong> - {definition}\n\n")
 
-    return answer
+    return "".join(answer)
 
 
 def wiktionary2anki(infile, outpath, lang):
@@ -39,12 +41,15 @@ def wiktionary2anki(infile, outpath, lang):
 
         if response.status_code == 200:
             data = response.json()
-        else:
-            print(f'Error: "{term}" not found!')
-            continue
 
-        if not lang in data:
-            print(f"There is no such term in {lang.upper()}: {term}")
+            if not lang in data:
+                print(f'Error: term "{term}" not found in {lang.upper()}!\n')
+                continue
+
+            print(f'Term "{term}" found!\n')
+
+        else:
+            print(f'Error: "{term}" not found!\n')
             continue
 
         categories = "/".join({item["partOfSpeech"] for item in data[lang]})
@@ -56,4 +61,4 @@ def wiktionary2anki(infile, outpath, lang):
             ]
         )
 
-    toAnki(fields, outpath)
+    utils.anki.to_anki(fields, outpath)

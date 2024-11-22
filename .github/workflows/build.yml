@@ -56,6 +56,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           update_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: dist/apkggen
-          asset_name: Apkggen
+          asset_path: dist/apkggen.exe
+          asset_name: Apkggengfgfgfgfgf.exe
           assets_content_type: application/zip

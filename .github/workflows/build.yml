@@ -17,9 +17,9 @@ jobs:
       - name: whichOS
         id: whichos
         run: |
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
             echo "os=linux" >> "$GITHUB_OUTPUT"
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
             echo "os=windows" >> "$GITHUB_OUTPUT"
           else
             echo "os=macos" >> "$GITHUB_OUTPUT"

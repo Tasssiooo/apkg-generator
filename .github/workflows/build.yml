@@ -43,32 +43,11 @@ jobs:
         run: |
           pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory --name apkggen-windows src/main.py
 
-      - name: Release for Linux
+      - name: Create release
         uses: softprops/action-gh-release@v2
-        if: matrix.os == 'ubuntu-latest'
         with:
-          files: dist/apkggen-linux
+          files: dist/*
           tag_name: ${{ github.ref_name }}
           name: "Apkggen"
-          draft: true
-          prerelease: false
-
-      - name: Release for MACOS
-        uses: softprops/action-gh-release@v2
-        if: matrix.os == 'macos-latest'
-        with:
-          files: dist/apkggen-macos
-          tag_name: ${{ github.ref_name }}
-          name: "Apkggen"
-          draft: true
-          prerelease: false
-
-      - name: Release for Windows
-        uses: softprops/action-gh-release@v2
-        if: matrix.os == 'windows-latest'
-        with:
-          files: dist/apkggen-windows.exe
-          tag_name: ${{ github.ref_name }}
-          name: "Apkggen ${{ github.ref_name }}"
           draft: true
           prerelease: false

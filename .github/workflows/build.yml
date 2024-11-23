@@ -16,6 +16,7 @@ jobs:
     steps:
       - name: whichOS
         id: whichos
+        shell: bash
         run: |
           if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
             echo "os=linux" >> "$GITHUB_OUTPUT"

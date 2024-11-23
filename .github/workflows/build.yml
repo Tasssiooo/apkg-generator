@@ -2,7 +2,8 @@ name: build
 run-name: build apkggen multi-platform
 on:
   push:
-    branches: [main]
+    tags:
+      - "v*"
   workflow_dispatch:
 
 jobs:
@@ -12,6 +13,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        filename: ["linux", "macos", "windows"]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
@@ -29,13 +31,13 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory --name apkggen src/main.py
+          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory --name apkggen-${{ matrix.filename }} src/main.py
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: matrix.os != 'windows-latest'
         with:
-          files: dist/apkggen
+          files: dist/apkggen-${{ matrix.filename }}
           tag_name: ${{ github.ref_name }}
           name: "Apkggen"
           draft: true
@@ -47,6 +49,6 @@ jobs:
         with:
           files: dist/apkggen.exe
           tag_name: ${{ github.ref_name }}
-          name: "Apkggen"
+          name: "Apkggen ${{ github.ref_name }}"
           draft: true
           prerelease: false

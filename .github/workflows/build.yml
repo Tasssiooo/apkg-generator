@@ -29,7 +29,7 @@ jobs:
 
       - name: Build with PyInstaller
         run: |
-          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory src/main.py
+          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory --name apkggen src/main.py
 
       - name: Release
         uses: softprops/action-gh-release@v2

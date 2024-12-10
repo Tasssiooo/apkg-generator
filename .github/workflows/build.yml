@@ -1,5 +1,4 @@
 name: release
-run-name: release apkggen multi-platform
 on:
   push:
     tags:
@@ -11,21 +10,21 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+        include:
+          - platform: macos-latest
+            target: "--target-arch x86_64"
+            id: "macos-x86_64"
+          - platform: macos-latest
+            target: "--target-arch arm64"
+            id: "macos-arm64"
+          - platform: "ubuntu-22.04"
+            target: ""
+            id: "linux"
+          - platform: windows-latest
+            target: ""
+            id: "windows"
+    runs-on: ${{ matrix.platform }}
     steps:
-      - name: whichOS
-        id: whichos
-        shell: bash
-        run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            echo "os=linux" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            echo "os=windows" >> "$GITHUB_OUTPUT"
-          else
-            echo "os=macos" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -40,29 +39,38 @@ jobs:
           pip install -r requirements.txt
 
       - name: Build with PyInstaller
+        shell: bash
         run: |
-          pyinstaller --onefile --noconsole --hidden-import dogpile.cache.backends.memory --name apkggen-${{ steps.whichOS.outputs.os }} src/main.py
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: apkggen-${{ steps.whichos.outputs.os }}
-          path: dist/*
-
-  release:
-    permissions:
-      contents: write
-    runs-on: ubuntu-22.04
-    needs: build
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-          merge-multiple: true
+          pyinstaller --onefile --noconsole \
+            --hidden-import dogpile.cache.backends.memory \
+            --name apkggen-${{ matrix.id }} \ 
+            src/main.py
 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Apkggen ${{ github.ref_name }}"
-          files: artifacts/*
+          files: dist/apkggen-${{ matrix.id }}
+
+      # - name: Upload Artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: apkggen-${{ steps.whichos.outputs.os }}
+      #     path: dist/*
+
+  # release:
+  #   permissions:
+  #     contents: write
+  #   runs-on: ubuntu-22.04
+  #   needs: build
+  #   steps:
+  #     - name: Download artifacts
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         path: artifacts
+  #         merge-multiple: true
+  #
+  #     - name: Release
+  #       uses: softprops/action-gh-release@v2
+  #       with:
+  #         name: "Apkggen ${{ github.ref_name }}"
+  #         files: artifacts/*

@@ -51,26 +51,3 @@ jobs:
         with:
           files: dist/apkggen-${{ matrix.id }}
 
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: apkggen-${{ steps.whichos.outputs.os }}
-      #     path: dist/*
-
-  # release:
-  #   permissions:
-  #     contents: write
-  #   runs-on: ubuntu-22.04
-  #   needs: build
-  #   steps:
-  #     - name: Download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         path: artifacts
-  #         merge-multiple: true
-  #
-  #     - name: Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         name: "Apkggen ${{ github.ref_name }}"
-  #         files: artifacts/*

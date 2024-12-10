@@ -4,6 +4,8 @@ on:
     tags:
       - "v*"
 
+  workflow_dispatch:
+
 jobs:
   build:
     permissions:
@@ -43,8 +45,10 @@ jobs:
         shell: bash
         run: |
           pyinstaller --onefile --noconsole \
+            --icon "NONE"
             --hidden-import dogpile.cache.backends.memory \
-            --name apkggen-${{ matrix.id }} \ 
+            --name apkggen-${{ matrix.id }} \
+            ${{ matrix.target }} \
             src/main.py
 
       - name: Release

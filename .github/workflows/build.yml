@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-12
+          - platform: macos-13
             target: "--target-arch x86_64"
             id: "macos-x86_64"
           - platform: macos-latest

@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - platform: macos-latest
-          #   target: "--target-arch universal2"
-          #   id: "macos-universal2"
+          - platform: macos-latest
+            target: "--target-arch universal2"
+            id: "macos-universal2"
           - platform: "ubuntu-22.04"
             target: ""
             id: "linux"
@@ -39,7 +39,7 @@ jobs:
       - name: Build with pyinstaller
         shell: bash
         run: |
-          pyinstaller --onedir --console \
+          pyinstaller --onefile --console \
             --icon "NONE" \
             --name apkggen-${{ matrix.id }} \
             --hidden-import dogpile.cache.backends.memory \

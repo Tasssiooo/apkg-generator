@@ -13,8 +13,11 @@ jobs:
       matrix:
         include:
           - platform: macos-latest
-            target: "--target-arch universal2"
-            id: "macos-universal2"
+            target: "--target-arch x86_64"
+            id: "macos-x86_64"
+          - platform: macos-latest
+            target: "--target-arch arm64"
+            id: "macos-arm64"
           - platform: "ubuntu-22.04"
             target: ""
             id: "linux"

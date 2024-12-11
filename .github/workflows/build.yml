@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - platform: macos-latest
+          - platform: macos-12
             target: "--target-arch x86_64"
             id: "macos-x86_64"
           - platform: macos-latest
@@ -30,17 +30,17 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Python setup
-        if: matrix.target != '--target-arch x86_64'
+        # if: matrix.target != '--target-arch x86_64'
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Python setup (x86_64)
-        if: matrix.target == '--target-arch x86_64'
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          architecture: 'x64'
+      # - name: Python setup (x86_64)
+      #   if: matrix.target == '--target-arch x86_64'
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
+      #     architecture: 'x64'
 
       - name: Install dependencies
         run: |

@@ -1,5 +1,4 @@
 import random
-import os
 import pathlib
 import genanki
 
@@ -9,10 +8,9 @@ def gen_id():
 
 
 def to_anki(fields, outpath):
-    outpath = pathlib.Path(outpath)
-    outpath = outpath.with_suffix(".apkg")
+    outpath = pathlib.Path(outpath).with_suffix(".apkg")
 
-    deck = genanki.Deck(gen_id(), os.path.basename(outpath).removesuffix(".apkg"))
+    deck = genanki.Deck(gen_id(), outpath.name.removesuffix(".apkg"))
 
     for note_fields in fields:
         deck.add_note(genanki.Note(model=genanki.BASIC_MODEL, fields=note_fields))
